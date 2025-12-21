@@ -8,8 +8,7 @@ export default function Hero() {
       const particlesContainer = document.getElementById("particles");
       if (!particlesContainer) return;
 
-      // Reduced particle count for cleaner look
-      const particleCount = 30;
+      const particleCount = 25;
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement("div");
         particle.classList.add("particle");
@@ -21,8 +20,8 @@ export default function Hero() {
         }
 
         particle.style.left = `${Math.random() * 100}vw`;
-        particle.style.animationDuration = `${Math.random() * 20 + 25}s`;
-        particle.style.animationDelay = `${Math.random() * 30}s`;
+        particle.style.animationDuration = `${Math.random() * 25 + 30}s`;
+        particle.style.animationDelay = `${Math.random() * 35}s`;
         particlesContainer.appendChild(particle);
       }
     };
@@ -33,45 +32,54 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="hero min-h-screen flex items-center justify-center text-center relative z-10"
+      className="min-h-screen flex items-center justify-center text-center relative z-10 px-6"
     >
-      <div className="hero-content max-w-5xl px-6">
-        {/* Refined tagline - appears first with subtle styling */}
-        <p className="text-sm md:text-base text-white/50 mb-6 uppercase tracking-[0.3em] font-light animate-fadeIn opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+      <div className="max-w-5xl">
+        {/* Status */}
+        <div className="flex justify-center mb-12 opacity-0 animate-fadeIn" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50 animate-pulse"></span>
+            <span className="mono">Available for Projects</span>
+          </div>
+        </div>
+
+        {/* Main headline */}
+        <h1 className="text-[clamp(3.5rem,12vw,9rem)] font-semibold leading-[0.9] tracking-[-0.04em] mb-8 opacity-0 animate-fadeIn" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
+          Aptcode
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-lg md:text-xl text-white/50 mb-8 font-light tracking-wide max-w-xl mx-auto opacity-0 animate-fadeIn" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
           Web & App Development Studio
         </p>
-        
-        {/* Main headline - elegant, refined typography */}
-        <h1 className="text-[clamp(3.5rem,12vw,8rem)] font-extralight mb-8 leading-[0.9] tracking-tight text-gradient animate-fadeIn opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-          Aptcode<span className="text-white/30">.</span>
-        </h1>
-        
-        {/* Tagline - refined */}
-        <p className="text-lg md:text-xl text-white/60 mb-16 font-light tracking-wide max-w-xl mx-auto animate-fadeIn opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-          Solutions engineered with precision
+
+        {/* Tagline */}
+        <p className="text-base md:text-lg text-white/40 mb-16 font-light max-w-lg mx-auto leading-relaxed opacity-0 animate-fadeIn" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+          We craft digital experiences with precision engineering
+          and thoughtful design.
         </p>
-        
-        {/* Minimal CTA button */}
-        <a
-          href="#contact"
-          className="group inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white/90 font-light tracking-wider rounded-full transition-all duration-500 hover:border-white/50 hover:bg-white/5 animate-fadeInUp opacity-0"
-          style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}
-        >
-          <span>Start Your Project</span>
-          <svg 
-            className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fadeInUp" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+          <a
+            href="#contact"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-medium tracking-wide rounded-full transition-all duration-300 hover:bg-white/90"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+            Start a Project
+          </a>
+          <a
+            href="#projects"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 text-white/80 font-medium tracking-wide rounded-full transition-all duration-300 hover:border-white/40 hover:text-white"
+          >
+            View Work
+          </a>
+        </div>
       </div>
-      
-      {/* Minimal scroll indicator */}
-      <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 animate-gentle-bounce opacity-0 animate-fadeIn" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
-        <div className="w-px h-16 bg-gradient-to-b from-white/40 to-transparent"></div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-3 opacity-0 animate-fadeIn" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
+        <span className="mono text-[10px]">Scroll</span>
+        <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent animate-gentle-bounce"></div>
       </div>
     </section>
   );
