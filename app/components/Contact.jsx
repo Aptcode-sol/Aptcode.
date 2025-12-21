@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Send, Check } from "lucide-react";
 
 export default function Contact() {
-  const [isMobile, setIsMobile] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -11,19 +11,6 @@ export default function Contact() {
     company: '',
     message: ''
   });
-
-  useEffect(() => {
-    const checkIfMobile = () => {
-      if (window.innerWidth < 768) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-    checkIfMobile();
-    window.addEventListener("resize", checkIfMobile);
-    return () => window.removeEventListener("resize", checkIfMobile);
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,37 +22,28 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validate required fields
+
     if (!formData.name || !formData.email || !formData.message) {
-      alert('Please fill in all required fields');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Get environment variables
       const accessKey = process.env.NEXT_PUBLIC_FORM_ACCESS_KEY;
-      const contactEmail ='contact@aptcode.in';
 
       if (!accessKey) {
-        console.error('Web3Forms access key not configured');
         throw new Error('Configuration error');
       }
 
-      // Create email content
-      const emailSubject = `New Contact Form Submission from ${formData.name}`;
-
-      // Use Web3Forms
       const formDataToSend = new FormData();
       formDataToSend.append('access_key', accessKey);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('company', formData.company || '');
       formDataToSend.append('message', formData.message);
-      formDataToSend.append('subject', emailSubject);
-      formDataToSend.append('from_name', 'AptCode Contact Form');
+      formDataToSend.append('subject', `New inquiry from ${formData.name}`);
+      formDataToSend.append('from_name', 'Aptcode Contact Form');
 
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -73,47 +51,30 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        // Show success animation
         setIsSubmitted(true);
         setFormData({ name: '', email: '', company: '', message: '' });
-        
-        // Reset success state after 5 seconds
+
         setTimeout(() => {
           setIsSubmitted(false);
-        }, 5000);
+        }, 4000);
       } else {
         throw new Error('Failed to send message');
       }
-      
+
     } catch (error) {
-      console.error('Failed to send email:', error);
-      
-      // Fallback to mailto if service fails
-      const contactEmail ='contact@aptcode.in';
-      const emailSubject = `Contact Form: ${formData.name} - ${formData.company || 'New Inquiry'}`;
-      const emailBody = `New Contact Form Submission:
+      // Fallback to mailto
+      const emailSubject = `Inquiry from ${formData.name}`;
+      const emailBody = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'Not specified'}\n\nMessage:\n${formData.message}`;
 
-Name: ${formData.name}
-Email: ${formData.email}
-Company: ${formData.company || 'Not specified'}
+      window.location.href = `mailto:contact@aptcode.in?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
-Message:
-${formData.message}
-
----
-This email was sent from the contact form on aptcode.in`;
-
-      const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-      window.location.href = mailtoLink;
-      
-      // Show success animation anyway
       setTimeout(() => {
         setIsSubmitted(true);
         setFormData({ name: '', email: '', company: '', message: '' });
-        
+
         setTimeout(() => {
           setIsSubmitted(false);
-        }, 5000);
+        }, 4000);
       }, 1000);
     } finally {
       setIsSubmitting(false);
@@ -121,113 +82,112 @@ This email was sent from the contact form on aptcode.in`;
   };
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-8 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
-            Get In Touch
-          </h2>
-          <p className="text-xl text-white/90 mb-16 max-w-2xl mx-auto font-medium leading-relaxed">
-            Ready to start your next project? Let's discuss how we can help bring your ideas to life.
-          </p>
+    <section id="contact" className="py-32 relative">
+      <div className="container mx-auto px-6">
+        <div className="max-w-2xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <p className="text-sm text-white/40 uppercase tracking-[0.2em] mb-6 font-light">
+              Get in Touch
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight mb-6">
+              Start a Project<span className="text-white/30">.</span>
+            </h2>
+            <p className="text-lg text-white/50 font-light">
+              Let's discuss how we can bring your ideas to life.
+            </p>
+          </div>
 
-          {/* Minimal Success Message */}
+          {/* Success Modal */}
           {isSubmitted && (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 backdrop-blur-sm">
-              <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl p-8 text-center max-w-sm mx-4">
-                <div className="w-12 h-12 mx-auto mb-4 rounded-full border border-green-400/50 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path>
-                  </svg>
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-sm">
+              <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-10 text-center max-w-sm mx-6">
+                <div className="w-14 h-14 mx-auto mb-6 rounded-full border border-white/20 flex items-center justify-center">
+                  <Check className="w-6 h-6 text-white/80" strokeWidth={1.5} />
                 </div>
-                <p className="text-white text-lg font-medium">Message sent successfully</p>
+                <p className="text-white/90 text-lg font-light">Message sent successfully</p>
               </div>
             </div>
           )}
 
           {/* Contact Form */}
-          <div className="text-left max-w-2xl mx-auto mb-16">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name and Email Row */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/30 text-white placeholder-white/60 focus:outline-none focus:border-white/80 transition-colors text-lg"
-                    placeholder="Your Name *"
-                  />
-                </div>
-                
-                <div>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/30 text-white placeholder-white/60 focus:outline-none focus:border-white/80 transition-colors text-lg"
-                    placeholder="Email Address *"
-                  />
-                </div>
-              </div>
-
-              {/* Company Field */}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Name and Email */}
+            <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <input
                   type="text"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/30 text-white placeholder-white/60 focus:outline-none focus:border-white/80 transition-colors text-lg"
-                  placeholder="Company (Optional)"
-                />
-              </div>
-
-              {/* Message Field */}
-              <div>
-                <textarea
-                  name="message"
-                  value={formData.message}
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   required
-                  rows={4}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/30 text-white placeholder-white/60 focus:outline-none focus:border-white/80 transition-colors text-lg resize-none"
-                  placeholder="Tell us about your project... *"
+                  className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors font-light text-lg"
+                  placeholder="Name"
                 />
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-4 flex justify-center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`inline-block px-8 py-4 border-2 border-white/80 text-white font-bold text-lg rounded-full transition-all ${
-                    isSubmitting 
-                      ? "opacity-50 cursor-not-allowed" 
-                      : isMobile
-                      ? ""
-                      : "hover:scale-105 hover:bg-white/10"
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
-                  ) : (
-                    "Send Message"
-                  )}
-                </button>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors font-light text-lg"
+                  placeholder="Email"
+                />
               </div>
-            </form>
-          </div>
+            </div>
+
+            {/* Company */}
+            <div>
+              <input
+                type="text"
+                name="company"
+                value={formData.company}
+                onChange={handleInputChange}
+                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors font-light text-lg"
+                placeholder="Company (Optional)"
+              />
+            </div>
+
+            {/* Message */}
+            <div>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                rows={4}
+                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors font-light text-lg resize-none"
+                placeholder="Tell us about your project..."
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-6 flex justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`group inline-flex items-center gap-3 px-10 py-4 border border-white/20 text-white/90 font-light tracking-wider rounded-full transition-all duration-500 ${isSubmitting
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:border-white/50 hover:bg-white/5"
+                  }`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin"></span>
+                    <span>Sending</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </section>

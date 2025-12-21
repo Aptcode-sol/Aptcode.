@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link"; // For Next.js; use plain <a> for React
+import Link from "next/link";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -9,20 +9,13 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     const checkIfMobile = () => {
-      if (window.innerWidth < 768) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-        setMenuOpen(false);
-      }
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setMenuOpen(false);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -35,49 +28,49 @@ export default function Navbar() {
     };
   }, []);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  // Smooth scroll function
   const smoothScroll = (e, target) => {
     e.preventDefault();
     const element = document.querySelector(target);
     if (element) {
       window.scrollTo({
         behavior: "smooth",
-        top: element.offsetTop - 80, // Adjust for navbar height
+        top: element.offsetTop - 80,
       });
     }
-    setMenuOpen(false); // Close mobile menu after click
+    setMenuOpen(false);
   };
+
+  const navItems = ["Home", "About", "Services", "Projects", "Contact"];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
-        scrolled ? "bg-black/80 backdrop-blur-[20px] py-3" : "bg-black/60 backdrop-blur-[10px] py-4"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${scrolled
+          ? "bg-black/80 backdrop-blur-xl py-4 border-b border-white/5"
+          : "bg-transparent py-6"
+        }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex justify-between items-center">
+          {/* Logo - Refined */}
           <Link
             href="#home"
             onClick={(e) => smoothScroll(e, "#home")}
-            className="text-[clamp(1.5rem,4vw,2rem)] font-black leading-none bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent"
+            className="text-xl font-light tracking-wider text-white/90 hover:text-white transition-colors duration-300"
           >
-            Aptcode.
+            Aptcode<span className="text-white/30">.</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Minimal */}
           {!isMobile && (
-            <div className="hidden md:flex space-x-8">
-              {["Home", "About", "Services", "Projects", "Contact"].map((item) => (
+            <div className="flex items-center gap-10">
+              {navItems.map((item) => (
                 <Link
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   onClick={(e) => smoothScroll(e, `#${item.toLowerCase()}`)}
-                  className="text-white/90 hover:text-white font-medium transition-all hover:scale-105 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.7)] px-3 py-2 rounded-lg"
+                  className="relative text-sm text-white/60 hover:text-white font-light tracking-wide transition-colors duration-300 hover-underline"
                 >
                   {item}
                 </Link>
@@ -85,68 +78,70 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Minimal */}
           {isMobile && (
             <button
               onClick={toggleMenu}
-              className="text-white focus:outline-none"
+              className="text-white/70 hover:text-white transition-colors p-2"
+              aria-label="Toggle menu"
             >
               <svg
-                className="w-8 h-8"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                  strokeWidth={1.5}
+                  d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 8h16M4 16h16"}
                 />
               </svg>
             </button>
           )}
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation Menu - Elegant */}
         {isMobile && (
           <div
-            className={`fixed top-0 right-0 h-screen w-64 bg-gradient-to-b from-black to-gray-900 backdrop-blur-sm border-l border-white/20 shadow-lg z-[1001] transform transition-transform duration-300 ease-in-out ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed inset-0 bg-black/95 backdrop-blur-xl z-[1001] transition-all duration-500 ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+              }`}
           >
-            {/* Close Button Inside Mobile Menu */}
-            <div className="flex justify-end p-4">
+            {/* Close Button */}
+            <div className="flex justify-end p-6">
               <button
                 onClick={toggleMenu}
-                className="text-white focus:outline-none"
+                className="text-white/70 hover:text-white transition-colors p-2"
+                aria-label="Close menu"
               >
                 <svg
-                  className="w-8 h-8"
+                  className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </div>
 
-            {/* Mobile Menu Items (Larger Text) */}
-            <div className="flex flex-col space-y-4 p-6 mt-4">
-              {["Home", "About", "Services", "Projects", "Contact"].map((item) => (
+            {/* Mobile Menu Items */}
+            <div className="flex flex-col items-center justify-center h-[80vh] gap-8">
+              {navItems.map((item, index) => (
                 <Link
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   onClick={(e) => smoothScroll(e, `#${item.toLowerCase()}`)}
-                  className="text-white/90 hover:text-white font-medium text-lg transition-all hover:scale-105 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.7)] px-4 py-3 rounded-lg"
+                  className="text-2xl text-white/70 hover:text-white font-light tracking-wider transition-all duration-300"
+                  style={{
+                    animationDelay: `${index * 0.1}s`,
+                  }}
                 >
                   {item}
                 </Link>

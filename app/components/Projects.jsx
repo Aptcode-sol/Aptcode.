@@ -1,75 +1,96 @@
 "use client";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Projects() {
   const projects = [
     {
       id: 1,
       title: "Aaranal",
-      description: "A full-stack eCommerce website for a tote bag business, featuring a responsive storefront, secure payment integration, and admin dashboard for managing products and orders.",
+      description: "Full-stack eCommerce platform for a tote bag business with secure payments and admin dashboard.",
       image: "/assets/aaranal.png",
-      tags: ["Next.js", "Razorpay API", "AWS"],
+      tags: ["Next.js", "Razorpay", "AWS"],
       link: "https://aaranaltales.shop",
     },
     {
       id: 2,
       title: "ChipSphere",
-      description: "An ECE-centric educational platform providing curated resources, interactive quizzes, and tools to support students in electronics and communication engineering.",
+      description: "Educational platform with curated resources and interactive tools for ECE students.",
       image: "/assets/chipsphere.png",
-      tags: ["Next.js", "Node.js", "Tailwind CSS"],
+      tags: ["Next.js", "Node.js", "Tailwind"],
       link: "https://www.chipsphere.in",
     }
   ];
 
   return (
     <section id="projects" className="py-32 relative">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-8 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
-            Our Projects
-          </h2>
-          <p className="text-xl text-white/90 mb-16 max-w-3xl mx-auto font-medium leading-relaxed">
-            Explore our portfolio of innovative solutions tailored to meet diverse business needs.
-          </p>
+      <div className="container mx-auto px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <p className="text-sm text-white/40 uppercase tracking-[0.2em] mb-6 font-light">
+              Portfolio
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tight mb-6">
+              Selected Work<span className="text-white/30">.</span>
+            </h2>
+            <p className="text-lg text-white/50 font-light max-w-xl mx-auto">
+              Innovative solutions tailored to meet diverse business needs.
+            </p>
+          </div>
 
           {/* Projects Grid */}
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${projects.length === 2 ? 'lg:grid-cols-2 lg:max-w-4xl lg:mx-auto' : 'lg:grid-cols-3'} gap-12`}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {projects.map((project) => (
-              <div key={project.id} className="group">
-                <Link
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <div className="relative overflow-hidden rounded-xl mb-6">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <Link
+                key={project.id}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+              >
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-xl mb-8 border border-white/5">
+                  <div className="aspect-[16/10] overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-64 object-cover object-left rounded-xl group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover object-left transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-white/80 transition-colors">
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center">
+                      <ArrowUpRight className="w-5 h-5 text-white" strokeWidth={1.5} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Project Info */}
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-light text-white/90 mb-3 tracking-wide group-hover:text-white transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-white/80 mb-5 group-hover:text-white transition-colors text-justify">
+                    <p className="text-white/50 font-light leading-relaxed mb-5">
                       {project.description}
                     </p>
-                    <div className="flex flex-wrap gap-3">
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag, index) => (
                         <span
                           key={index}
-                          className="px-4 py-1.5 bg-white/10 text-white/90 text-sm rounded-full transition-colors group-hover:bg-white/20"
+                          className="px-3 py-1.5 text-xs text-white/50 border border-white/10 rounded-full font-light tracking-wide"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
