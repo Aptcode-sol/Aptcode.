@@ -44,7 +44,8 @@ export default function About() {
             {/* Stats - Grid on mobile, flex on larger screens */}
             <div className="grid grid-cols-3 gap-4 sm:gap-8 md:flex md:gap-16 border-t border-white/10 pt-6 sm:pt-10">
               <div className={`transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2">5+</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl lg:tex
+                t-5xl font-bold mb-1 sm:mb-2">5+</div>
                 <div className="text-xs sm:text-sm text-white/40 tracking-wide">Projects Delivered</div>
               </div>
               <div className={`transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
