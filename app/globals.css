@@ -312,3 +312,32 @@ h1, h2, h3, h4, h5, h6 {
 a, button {
   cursor: pointer;
 }
+
+/* ===== STORY IDLE ANIMATIONS ===== */
+@keyframes cubeFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-18px) rotate(1.5deg); }
+  66%       { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes stationSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rocketHover {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.cube-float {
+  animation: cubeFloat 5s ease-in-out infinite;
+}
+
+.station-spin {
+  animation: stationSpin 120s linear infinite;
+}
+
+.rocket-rise {
+  animation: rocketHover 3s ease-in-out infinite;
+}

@@ -96,13 +96,15 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="py-40 relative overflow-hidden" ref={sectionRef}>
+    <section id="projects" className="py-40 relative overflow-hidden bg-black" ref={sectionRef}>
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      {/* Subtle deep-space ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-white/[0.015] blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className={`mb-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="mono mb-6">— Featured Work</div>
+          <div className="mono mb-6 text-white/40" style={{ letterSpacing: "0.15em" }}>— Featured Work</div>
           <div className="flex flex-col lg:flex-row justify-between gap-8 lg:items-end">
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight">
               Projects<span className="text-white/30">.</span>

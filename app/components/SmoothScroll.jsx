@@ -2,6 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }) {
     const lenisRef = useRef(null);
@@ -16,15 +20,32 @@ export default function SmoothScroll({ children }) {
 
         lenisRef.current = lenis;
 
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        // Use GSAP ticker as single RAF driver
+        const tickerCallback = (time) => lenis.raf(time * 1000);
+        gsap.ticker.add(tickerCallback);
+        gsap.ticker.lagSmoothing(0);
 
-        requestAnimationFrame(raf);
+        // Give ScrollTrigger Lenis's scroll position
+        ScrollTrigger.scrollerProxy(document.body, {
+            scrollTop(value) {
+                if (arguments.length) {
+                    lenis.scrollTo(value, { immediate: true });
+                } else {
+                    return lenis.scroll;
+                }
+            },
+            getBoundingClientRect() {
+                return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+            },
+        });
+
+        lenis.on("scroll", ScrollTrigger.update);
 
         return () => {
+            gsap.ticker.remove(tickerCallback);
+            lenis.off("scroll", ScrollTrigger.update);
             lenis.destroy();
+            ScrollTrigger.clearScrollMemory();
         };
     }, []);
 

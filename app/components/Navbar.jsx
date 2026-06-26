@@ -12,7 +12,7 @@ export default function Navbar() {
   const navRef = useRef(null);
   const navItemsRef = useRef({});
 
-  const navItems = ["Home", "About", "Services", "Projects", "Contact"];
+  const navItems = ["Home", "Projects", "Contact"];
 
   useEffect(() => {
     setLoaded(true);
@@ -21,7 +21,7 @@ export default function Navbar() {
       setScrolled(window.scrollY > 50);
 
       // Detect active section
-      const sections = ["home", "about", "services", "projects", "contact"];
+      const sections = ["home", "projects", "contact"];
       for (const section of [...sections].reverse()) {
         const el = document.getElementById(section);
         if (el && window.scrollY >= el.offsetTop - 200) {
@@ -141,8 +141,8 @@ export default function Navbar() {
 
           <div className="p-8 border-t border-white/10">
             <a
-              href="#book-call-section"
-              onClick={(e) => smoothScroll(e, "#book-call-section")}
+              href="#contact"
+              onClick={(e) => smoothScroll(e, "#contact")}
               className="flex items-center justify-between"
             >
               <span className="text-white/50">Ready to start?</span>
