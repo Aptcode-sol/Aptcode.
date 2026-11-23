@@ -152,7 +152,7 @@ export default function Projects() {
                 </div>
 
                 {/* Right - Meta */}
-                <div className="flex items-center gap-8 lg:gap-12 ml-14 lg:ml-0">
+                <div className="grid grid-cols-[minmax(0,1fr)_3rem_7.5rem] sm:grid-cols-[10rem_4rem_8rem] items-center gap-4 sm:gap-8 lg:gap-12 ml-14 lg:ml-0 lg:shrink-0">
                   <div className="transition-all duration-500 opacity-100">
                     <div className="text-xs text-white/30 uppercase tracking-wider mb-1">Category</div>
                     <div className="text-white/70 text-sm md:text-base">{project.category}</div>
@@ -162,7 +162,7 @@ export default function Projects() {
                     <div className="text-white/70 text-sm md:text-base">{project.year}</div>
                   </div>
                   <div className="transition-all duration-500 opacity-100">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300
+                    <span className={`inline-block whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium transition-all duration-300
                       ${(project.status === 'Live' || project.status === 'Launching Soon') ? 'bg-neutral-700 text-white'
                         : clickedInProgress === project.id ? 'bg-white text-black scale-110'
                           : 'border border-white/20 text-white/50'
