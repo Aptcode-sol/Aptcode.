@@ -27,7 +27,7 @@ export default function Projects() {
       year: "2025",
       status: "Live",
       description: "Premium tote bags brand with seamless checkout & admin dashboard",
-      link: "https://aaranaltales.shop",
+      link: "https://aaranaltales.in/",
       tags: ["Next.js", "Razorpay", "AWS"]
     },
     {
@@ -47,7 +47,7 @@ export default function Projects() {
       year: "2026",
       status: "Live",
       description: "Complete event management platform for organizers and attendees",
-      link: "https://letsfira.com",
+      link: "https://www.letsfira.com/",
       tags: ["Next.js", "Node.js", "AWS"]
     },
     {
@@ -67,7 +67,7 @@ export default function Projects() {
       year: "2026",
       status: "Live",
       description: "Multi-level marketing website with referral tracking & dashboards",
-      link: "https://mayocosmiccare.com",
+      link: "https://mayocosmiccare.com/",
       tags: ["Next.js", "PostgreSQL", "Stripe", "AWS"]
     }
   ];

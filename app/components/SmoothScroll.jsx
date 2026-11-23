@@ -15,6 +15,8 @@ export default function SmoothScroll({ children }) {
         });
 
         lenisRef.current = lenis;
+        // Exposed so sections (e.g. Services) can scroll programmatically through Lenis
+        window.__lenis = lenis;
 
         function raf(time) {
             lenis.raf(time);
@@ -25,6 +27,7 @@ export default function SmoothScroll({ children }) {
 
         return () => {
             lenis.destroy();
+            if (window.__lenis === lenis) delete window.__lenis;
         };
     }, []);
 
